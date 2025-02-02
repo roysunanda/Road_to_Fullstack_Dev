@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import { router as healthcheckRouter } from "./routes/healthcheck.routes.js";
+import { router as healthcheckRouter } from "./routes/healthcheck.route.js";
 
 const app = express();
 
