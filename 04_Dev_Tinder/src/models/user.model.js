@@ -10,6 +10,7 @@ const userSchema = new Schema({
     type: String,
     required: true,
     unique: true,
+    trim: true,
   },
   password: {
     type: String,
@@ -23,6 +24,7 @@ const userSchema = new Schema({
   },
   photoUrl: {
     type: String,
+    default: "https://picsum.photos/200",
   },
   about: {
     type: String,
