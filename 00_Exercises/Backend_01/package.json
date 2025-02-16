@@ -1,25 +1,22 @@
 {
-  "name": "01 - Backend",
+  "name": "02_backend_2",
   "version": "1.0.0",
-  "description": "",
   "main": "src/index.js",
   "type": "module",
   "scripts": {
-    "start": "node index.js",
     "dev": "nodemon index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "description": "",
   "devDependencies": {
     "nodemon": "^3.1.9"
   },
   "dependencies": {
-    "dotenv": "^16.4.7",
     "ejs": "^3.1.10",
     "express": "^4.21.2",
-    "express-session": "^1.18.1",
-    "mongoose": "^8.9.7",
-    "nanoid": "^5.0.9"
+    "mongoose": "^8.10.1",
+    "morgan": "^1.10.0"
   }
 }
