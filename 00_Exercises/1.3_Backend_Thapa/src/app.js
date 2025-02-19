@@ -4,7 +4,7 @@ import morgan from "morgan";
 
 import { userModel } from "./models/user.model.js";
 import { dummyUsers } from "./data/dummyData.js";
-import { validateModel } from "./validate/validate.js";
+import { validateModel, validateZod } from "./validate/validate.js";
 
 const app = express();
 
@@ -12,6 +12,8 @@ const app = express();
 // app.set("views", path.join("views"));
 
 app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+
 app.use(express.static(path.resolve("public")));
 app.use(morgan("tiny"));
 
@@ -30,10 +32,20 @@ app.get("/upload", async (req, res) => {
 });
 
 app.post("/create", (req, res) => {
+  // console.log(req.body);
   const { username, isMarried, password, age, email } = req.body;
-  const msg = validateModel({ username, isMarried, password, age, email });
-  // console.log(msg.error.message);
-  res.json({ status: msg });
+  const validate = validateZod({ username, isMarried, password, age, email });
+
+  if (!validate.success) {
+    return res.json({
+      success: validate.success,
+      msg: validate.error,
+    });
+  }
+
+  res.json({ success: validate.success, msg: validate.data });
+
+  // res.json({ validate });
 });
 
 export { app };

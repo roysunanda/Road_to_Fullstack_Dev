@@ -1,4 +1,5 @@
 import Joi from "joi";
+import { z } from "zod";
 
 function validateModel(data) {
   const joiSchema = Joi.object({
@@ -11,4 +12,16 @@ function validateModel(data) {
   return joiSchema.validate(data);
 }
 
-export { validateModel };
+function validateZod(data) {
+  const zodSchema = z.object({
+    username: z.string().trim(),
+    password: z.string().trim().toLowerCase(),
+    age: z.number().min(18),
+    isMarried: z.boolean(),
+    email: z.string().email().trim().toLowerCase(),
+  });
+
+  return zodSchema.safeParse(data);
+}
+
+export { validateModel, validateZod };
