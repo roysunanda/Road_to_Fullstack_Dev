@@ -554,14 +554,18 @@ video {
   display: none;
 }
 
+.table {
+  display: table;
+}
+
 .text-5xl {
   font-size: 3rem;
   line-height: 1;
 }
 
-.text-yellow-400 {
-  --tw-text-opacity: 1;
-  color: rgb(250 204 21 / var(--tw-text-opacity, 1));
+.text-9xl {
+  font-size: 8rem;
+  line-height: 1;
 }
 
 .text-red-400 {
