@@ -2,14 +2,14 @@ import path from "path";
 import express from "express";
 import morgan from "morgan";
 
-import { userModel } from "./models/user.model.js";
-import { dummyUsers } from "./data/dummyData.js";
-import { validateModel, validateZod } from "./validate/validate.js";
+// import { userModel } from "./models/user.model.js";
+// import { dummyUsers } from "./data/dummyData.js";
+// import { validateModel, validateZod } from "./validate/validate.js";
 
 const app = express();
 
-app.set("view engine", "ejs");
-app.set("views", path.resolve("views"));
+// app.set("view engine", "ejs");
+// app.set("views", path.resolve("views"));
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());

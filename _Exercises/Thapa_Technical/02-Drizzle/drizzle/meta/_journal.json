@@ -1,0 +1,13 @@
+{
+  "version": "7",
+  "dialect": "mysql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1741001481523,
+      "tag": "0000_lowly_dragon_lord",
+      "breakpoints": true
+    }
+  ]
+}

@@ -1,16 +1,17 @@
-import dotenv from "dotenv";
-dotenv.config();
+// import dotenv from "dotenv";
+// dotenv.config();
 
 // import { connectDB } from "./db/connect.db.js";
-import { connectMySQL } from "./db/connect-mysql.db.js";
+// import { connectMySQL } from "./db/connect-mysql.db.js";
 import { app } from "./app.js";
+import { drizzle_db } from "./db/connect.drizzle.js";
 
 const PORT = process.env.PORT || 5000;
 
 const startServer = async () => {
   try {
     // await connectDB();
-    await connectMySQL();
+    // await connectMySQL();
     app.listen(PORT, () => {
       console.log(`\nServer is listening on PORT: ${PORT}`);
     });
@@ -19,4 +20,5 @@ const startServer = async () => {
   }
 };
 
-startServer();
+// startServer();
+drizzle_db();
