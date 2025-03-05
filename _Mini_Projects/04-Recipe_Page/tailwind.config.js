@@ -7,7 +7,7 @@ module.exports = {
       'outfit': ["Outfit", 'serif']
     },
     screens: {
-      'desktop': '700px'
+      'desktop': '768px'
     },
     extend: {
     },
