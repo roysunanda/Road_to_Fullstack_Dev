@@ -13,15 +13,10 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
-  posts: [
+  post: [
     {
-      content: {
-        type: String,
-      },
-      date: {
-        type: Date,
-        default: Date.now(),
-      },
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Post",
     },
   ],
 });

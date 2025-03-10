@@ -3,6 +3,7 @@ import express from "express";
 import morgan from "morgan";
 
 import { userModel } from "./models/user.model.js";
+import { postModel } from "./models/post-model.js";
 
 const app = express();
 
@@ -44,7 +45,7 @@ app.get("/", (req, res) => {
 
 app.post("/create", async (req, res) => {
   try {
-    const userData = await userModel.create({
+    let userData = await userModel.create({
       username: req.body.username,
       email: req.body.email,
       password: req.body.password,
@@ -61,13 +62,42 @@ app.post("/create", async (req, res) => {
 
 app.post("/:username/create/post", async (req, res) => {
   try {
-    const user = await userModel.findOne({ username: req.params.username });
-    user.posts.push({ content: "hey, my name is also sandy." });
+    let user = await userModel.findOne({ username: req.params.username });
+    let createPost = await postModel.create({
+      content: req.body.data,
+      user: user._id,
+    });
+
+    user.posts.push(createPost._id);
     await user.save();
 
     res.json({
       success: true,
-      msg: user,
+      msg: { user, createPost },
+    });
+  } catch (error) {
+    console.log(`\n\n${error}`);
+  }
+});
+
+app.get("/posts", async (req, res) => {
+  try {
+    let posts = await postModel.find().populate("user");
+    res.json({
+      success: true,
+      msg: posts,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+app.get("/users", async (req, res) => {
+  try {
+    let users = await userModel.find().populate("post");
+    res.json({
+      success: true,
+      msg: users,
     });
   } catch (error) {
     console.log(error);
