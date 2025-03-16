@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Chats</title>
+  </head>
+  <body>
+    <h1>All chats</h1>
+    <%_ for (let item of chats){ _%>
+
+    <div class="bg-orange-200 mt-6">
+      <p>From: <%= item.from %></p>
+      <p>Msg: <%= item.msg %></p>
+      <p>Received By: <%= item.to %></p>
+    </div>
+
+    <%_ } _%>
+  </body>
+</html>
