@@ -1,0 +1,124 @@
+/* 1. Use a more-intuitive box-sizing model */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* 2. Remove default margin */
+* {
+  margin: 0;
+}
+
+body {
+  /* 3. Add accessible line-height */
+  line-height: 1.5;
+  /* 4. Improve text rendering */
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 5. Improve media defaults */
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* 6. Inherit fonts for form controls */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+/* 7. Avoid text overflows */
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+
+/* 8. Improve line wrapping */
+p {
+  text-wrap: pretty;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  text-wrap: balance;
+}
+
+/*
+  9. Create a root stacking context
+*/
+#root,
+#__next {
+  isolation: isolate;
+}
+
+/* ############ CODE START ############# */
+
+.debug1 {
+  outline: 2px dashed orangered;
+}
+
+.debug2 {
+  outline: 2px dashed orangered;
+}
+
+body {
+  /* display: flex; */
+  min-height: 100vh;
+  /* background-color: skyblue; */
+  /* justify-content: center; */
+  /* align-items: center; */
+  display: grid;
+  place-content: center;
+}
+
+.container {
+  display: grid;
+  /* width: 80vw; */
+  /* min-width: 200px; */
+  height: 60vh;
+  width: 80vw;
+  background-color: blanchedalmond;
+  gap: 5px;
+  grid-template: repeat(2, 100px) / repeat(3, 100px);
+  grid-auto-rows: fit-content(250px);
+  /* grid-auto-columns: max-content; */
+  /* grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); */
+  /* grid-template-rows: ; */
+  /* align-content: center; */
+  /* justify-content: center; */
+  /* align-items: center; */
+  /* justify-items: center; */
+  /* place-items: center; */
+}
+
+.element {
+  /* width: 80px; */
+  /* height: 80px; */
+  background-color: orange;
+  border-radius: 10px;
+  border: 1px solid black;
+}
+
+.span-h {
+  /* grid-column: span 2; */
+}
+
+.span-v {
+  /* grid-row: span 2; */
+}
