@@ -11,13 +11,13 @@ The designs were created to the following widths:
 
 ## Colors
 
-- Green: hsl(75, 94%, 57%)
+- Green: #c5f82a
 
-- White: hsl(0, 0%, 100%)
+- White: #ffffff
 
-- Grey 700: hsl(0, 0%, 20%)
-- Grey 800: hsl(0, 0%, 12%)
-- Grey 900: hsl(0, 0%, 8%)
+- Grey 700: #333333
+- Grey 800: #1f1f1f
+- Grey 900: #141414
 
 ## Typography
 
