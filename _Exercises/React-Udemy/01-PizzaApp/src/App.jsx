@@ -13,17 +13,17 @@ function App() {
 }
 
 function Pizza(props) {
-  console.log(props);
+  // console.log(props);
   return (
     <>
-      <div className='pizza'>
-        <img src={props.photoName} alt={props.photoName} />
+      <li className='pizza'>
+        <img src={props.pizzaObj.photoName} alt={props.pizzaObj.photoName} />
         <div>
-          <h3>{props.name}</h3>
-          <p>{props.ingredient}</p>
-          <span>${props.price}</span>
+          <h3>{props.pizzaObj.name}</h3>
+          <p>{props.pizzaObj.ingredients}</p>
+          <span>${props.pizzaObj.price}</span>
         </div>
-      </div>
+      </li>
     </>
   );
 }
@@ -39,11 +39,21 @@ function Header() {
 }
 
 function Menu() {
+  const pizzas = pizzaData;
+  const numPizzas = pizzaData.length;
   return (
     <>
       <main className='menu'>
         <h2>Our Menu</h2>
-        <Pizza
+
+        {numPizzas > 0 && (
+          <ul className='pizzas'>
+            {pizzas.map((pizza) => (
+              <Pizza pizzaObj={pizza} key={pizza.name} />
+            ))}
+          </ul>
+        )}
+        {/* <Pizza
           name={pizzaData[0].name}
           ingredient={pizzaData[0].ingredients}
           photoName={pizzaData[0].photoName}
@@ -54,24 +64,29 @@ function Menu() {
           ingredient={pizzaData[1].ingredients}
           photoName={pizzaData[1].photoName}
           price={pizzaData[1].price}
-        />
+        /> */}
       </main>
     </>
   );
 }
 
 function Footer() {
-  // const hour = new Date().getHours();
-  // const openHour = 12;
-  // const closeHour = 22;
-  // const isOpen = hour >= openHour && hour <= closeHour;
+  const hour = new Date().getHours();
+  const openHour = 12;
+  const closeHour = 22;
+  const isOpen = hour >= openHour && hour <= closeHour;
   // if (hour >= openHour && hour <= closeHour) alert(`We're currently open!`);
   // else alert(`Sorry we're closed!`);
-  // console.log(isOpen);
+  console.log(isOpen);
 
   return (
     <footer className='footer'>
-      {new Date().toLocaleTimeString()}. We're currently open.
+      {isOpen && (
+        <div className='order'>
+          <p>We're open until {closeHour}:00. Come visit us or Order online.</p>
+          <button className='btn'>Order</button>
+        </div>
+      )}
     </footer>
   );
 }

@@ -25,8 +25,10 @@ function Avatar() {
 function Intro() {
   return (
     <>
-      <h1>SANDY</h1>
-      <p>description.</p>
+      <div>
+        <h1>SANDY</h1>
+        <p>Web Developer & AI Enthusiast.</p>
+      </div>
     </>
   );
 }
@@ -34,17 +36,24 @@ function Intro() {
 function SkillList() {
   return (
     <>
-      <Skill />
-      <Skill />
-      <Skill />
+      <div className='skill-list'>
+        <Skill skill='React' emoji='⚛️' color='#ef476f' />
+        <Skill skill='Node' emoji='🌐' color='#ffd166' />
+        <Skill skill='JS' emoji='⌨️' color='#06d6a0' />
+        <Skill skill='Python' emoji='🐍' color='#118ab2' />
+        <Skill skill='MongoDB' emoji='🎈' color='#d9d9d9' />
+      </div>
     </>
   );
 }
 
-function Skill() {
+function Skill(props) {
   return (
     <>
-      <p>Skill</p>
+      <div className='skill' style={{ backgroundColor: props.color }}>
+        <span>{props.skill}</span>
+        <span>{props.emoji}</span>
+      </div>
     </>
   );
 }
