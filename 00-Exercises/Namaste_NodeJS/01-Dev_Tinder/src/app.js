@@ -1,6 +1,6 @@
 import express from "express";
 
-import { userModel as User } from "./models/user.model.js";
+import { userModel as User } from "../models/user.model.js";
 
 const app = express();
 
@@ -8,12 +8,29 @@ app.use(express.json());
 
 app.post("/signup", async (req, res) => {
   // console.log(req.body);
-  const user = new User(req.body);
+  // const user = new User(req.body);
   try {
-    await user.save();
-    res.status(200).send(`user added successfully!`);
+    // await user.save();
+    const userData = await User.insertOne(req.body);
+    // res.status(200).send(`user added successfully!`);
+    res.status(200).json({ success: true, data: userData });
   } catch (error) {
-    res.status(400).send(`Something went wrong!`);
+    // res.status(400).send(`Something went wrong!`);
+    res.status(400).json({ msg: error.message });
+  }
+});
+
+app.post("/signupMany", async (req, res) => {
+  // console.log(req.body);
+  // const user = new User(req.body);
+  try {
+    // await user.save();
+    // res.status(200).send(`user added successfully!`);
+    const usersData = await User.insertMany(req.body);
+    // res.status(200).send(`user added successfully!`);
+    res.status(200).json({ success: true, data: usersData });
+  } catch (error) {
+    res.status(400).json({ msg: error.message });
   }
 });
 
@@ -64,16 +81,21 @@ app.delete("/:id", async (req, res) => {
 app.patch("/user", async (req, res) => {
   try {
     const id = req.body.id;
-    const data = req.body.data;
-    const user = await User.findByIdAndUpdate(
-      id,
-      { firstName: data },
-      { returnDocument: "after" }
-    );
-    res.status(200).json({ status: "success", data: user });
+    const updateData = req.body.updateData;
+    const user = await User.findByIdAndUpdate(id, updateData, {
+      returnDocument: "after",
+      runValidators: true,
+    });
+    res.status(200).json({ success: "true", data: user });
   } catch (error) {
-    res.status(400).send(`Something went wrong!`);
+    // res.status(400).send(`Something went wrong!`);
+    res.status(400).json({ msg: error.message });
   }
 });
+
+// app.use((err, req, res, next) => {
+//   console.log(err);
+//   next();
+// });
 
 export { app };

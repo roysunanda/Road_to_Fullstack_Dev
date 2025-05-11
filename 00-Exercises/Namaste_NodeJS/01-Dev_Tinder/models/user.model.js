@@ -12,6 +12,7 @@ const userSchema = new Schema(
       required: true,
       unique: true,
       trim: true,
+      lowercase: true,
     },
     password: {
       type: String,
@@ -22,6 +23,11 @@ const userSchema = new Schema(
     },
     gender: {
       type: String,
+      validate(val) {
+        if (!["male", "female"].includes(val)) {
+          throw new Error("Use correct gender type.");
+        }
+      },
     },
     photoUrl: {
       type: String,
