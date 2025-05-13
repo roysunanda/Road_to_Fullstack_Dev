@@ -1,4 +1,5 @@
 import mongoose, { Schema } from "mongoose";
+import validate from "validator";
 
 const userSchema = new Schema(
   {
@@ -24,7 +25,7 @@ const userSchema = new Schema(
     gender: {
       type: String,
       validate(val) {
-        if (!["male", "female"].includes(val)) {
+        if (!validate.isIn(val, ["male", "female"])) {
           throw new Error("Use correct gender type.");
         }
       },
