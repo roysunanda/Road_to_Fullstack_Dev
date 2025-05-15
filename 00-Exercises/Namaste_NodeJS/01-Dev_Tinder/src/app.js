@@ -1,22 +1,41 @@
 import express from "express";
+import bcrypt from "bcryptjs";
 
 import { userModel as User } from "../models/user.model.js";
+import { validateSignUpData } from "../utils/validation.js";
 
 const app = express();
 
 app.use(express.json());
 
 app.post("/signup", async (req, res) => {
-  // console.log(req.body);
-  // const user = new User(req.body);
+  // const { firstName, lastName, emailId, password, gender } = req.body;
   try {
-    // await user.save();
-    const userData = await User.insertOne(req.body);
-    // res.status(200).send(`user added successfully!`);
-    res.status(200).json({ success: true, data: userData });
+    // ############# Validate the data
+    const validate = validateSignUpData.safeParse(req.body);
+    if (!validate.success) {
+      return res.status(400).json({
+        success: validate.success,
+        error: validate.error.errors,
+      });
+    }
+
+    // ################# Encrypt the data
+    const passwordHash = await bcrypt.hash(validate.data.password, 10);
+    validate.data.password = passwordHash;
+    console.log(passwordHash);
+
+    const checkPass = await bcrypt.compare("sandy123", passwordHash);
+    console.log(checkPass);
+
+    // ################ Response Data
+    res.status(200).json({ success: true, data: validate.data });
+
+    // const userData = await User.insertOne(req.body);
+    // res.status(200).json({ success: true, data: userData });
   } catch (error) {
     // res.status(400).send(`Something went wrong!`);
-    res.status(400).json({ msg: error.message });
+    res.status(500).json({ error: "Something went wrong!" });
   }
 });
 
