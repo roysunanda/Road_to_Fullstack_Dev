@@ -1,5 +1,7 @@
-import express from "express";
+import express, { json } from "express";
 import bcrypt from "bcryptjs";
+import cookieParser from "cookie-parser";
+import jwt from "jsonwebtoken";
 
 import { userModel as User } from "../models/user.model.js";
 import { validateSignUpData } from "../utils/validation.js";
@@ -7,6 +9,39 @@ import { validateSignUpData } from "../utils/validation.js";
 const app = express();
 
 app.use(express.json());
+app.use(cookieParser());
+
+app.post("/login", async (req, res) => {
+  try {
+    const { email, pass } = req.body;
+    // console.log(pass);
+    const user = await User.findOne({ emailId: email });
+    if (!user) {
+      return res.status(400).json({ error: "invalid credentials." });
+    }
+    const isPassValid = await bcrypt.compare(pass, user.password);
+    if (!isPassValid) {
+      return res.status(400).json({ error: "invalid credentials." });
+    }
+    const token = await jwt.sign({ _id: user._id }, "SecrectKey@123");
+    // console.log(token);
+    res.cookie("token", token);
+    res.status(200).json({ msg: "login successful." });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.get("/profile", async (req, res) => {
+  const { token } = req.cookies;
+  // console.log(cookie);
+  try {
+    const decodedMsg = await jwt.verify(token, "SecrectKey@123");
+    res.status(200).json({ success: true, data: decodedMsg });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
 app.post("/signup", async (req, res) => {
   // const { firstName, lastName, emailId, password, gender } = req.body;
@@ -23,19 +58,20 @@ app.post("/signup", async (req, res) => {
     // ################# Encrypt the data
     const passwordHash = await bcrypt.hash(validate.data.password, 10);
     validate.data.password = passwordHash;
-    console.log(passwordHash);
 
+    // Check Password
     const checkPass = await bcrypt.compare("sandy123", passwordHash);
     console.log(checkPass);
 
     // ################ Response Data
+    res.cookie("test", "test12345");
     res.status(200).json({ success: true, data: validate.data });
 
-    // const userData = await User.insertOne(req.body);
+    // const userData = await User.insertOne(validate.data);
     // res.status(200).json({ success: true, data: userData });
   } catch (error) {
     // res.status(400).send(`Something went wrong!`);
-    res.status(500).json({ error: "Something went wrong!" });
+    res.status(500).json({ error: error.message });
   }
 });
 
@@ -69,6 +105,8 @@ app.get("/user", async (req, res) => {
     if (!user) {
       return res.status(404).send(`user not found`);
     }
+    const cookie = req.cookies;
+    console.log(cookie);
     res.status(200).send(user);
   } catch (error) {
     res.status(400).send(`Something went wrong!`);
@@ -120,10 +158,5 @@ app.patch("/user", async (req, res) => {
     res.status(400).json({ msg: error.message });
   }
 });
-
-// app.use((err, req, res, next) => {
-//   console.log(err);
-//   next();
-// });
 
 export { app };
