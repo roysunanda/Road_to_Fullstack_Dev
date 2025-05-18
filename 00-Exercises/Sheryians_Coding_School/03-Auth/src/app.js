@@ -4,6 +4,7 @@ import morgan from "morgan";
 import dotenv from "dotenv";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 
@@ -17,6 +18,7 @@ const app = express();
 
 // app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+app.use(cookieParser());
 
 // app.use(express.static(path.resolve("public")));
 
@@ -44,23 +46,35 @@ app.use(express.json());
 //   res.json({ status: msg });
 // });
 
-app.get("/", (req, res) => {
+app.get("/test", (req, res) => {
   res.status(200).send(`hello world!`);
 });
 
-app.post("/create", async (req, res) => {
-  // res.status(200).json({ success: true, msg: "hello!" });
-  const pasw = "sandy";
-  const salt = await bcrypt.genSalt(10);
-  const pass = await bcrypt.hash(pasw, salt);
-  const check = await bcrypt.compare("sandy", pass);
-  // console.log(req.body.pass);
-  res.json({ success: true, msg: pass, isCheck: check });
-});
+// app.post("/create", async (req, res) => {
+//   // res.status(200).json({ success: true, msg: "hello!" });
+//   const pasw = "sandy";
+//   const salt = await bcrypt.genSalt(10);
+//   const pass = await bcrypt.hash(pasw, salt);
+//   const check = await bcrypt.compare("sandy", pass);
+//   // console.log(req.body.pass);
+//   res.json({ success: true, msg: pass, isCheck: check });
+// });
 
 app.get("/token", (req, res) => {
-  const token = jwt.sign({ email: "sandy@email.com" }, "sandy");
-  res.json({ msg: token });
+  const token = jwt.sign({ name: "sandy" }, "sandy123");
+  res.cookie("token", token);
+  res.json({ succes: true });
+});
+
+app.get("/fetchdata", async (req, res) => {
+  const { token } = req.cookies;
+  console.log(token);
+  try {
+    const decodedMsg = await jwt.verify(token, "sandy123");
+    res.status(200).json({ msg: decodedMsg });
+  } catch (error) {
+    res.status(400).json({ error: "something went wrong!" });
+  }
 });
 
 export { app };
