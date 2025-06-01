@@ -6,11 +6,10 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import cookieParser from "cookie-parser";
 
-dotenv.config();
-
 // import { userModel } from "./models/user.model.js";
 // import { postModel } from "./models/post-model.js";
 
+dotenv.config();
 const app = express();
 
 // app.set("view engine", "ejs");
@@ -46,10 +45,6 @@ app.use(cookieParser());
 //   res.json({ status: msg });
 // });
 
-app.get("/test", (req, res) => {
-  res.status(200).send(`hello world!`);
-});
-
 // app.post("/create", async (req, res) => {
 //   // res.status(200).json({ success: true, msg: "hello!" });
 //   const pasw = "sandy";
@@ -60,21 +55,27 @@ app.get("/test", (req, res) => {
 //   res.json({ success: true, msg: pass, isCheck: check });
 // });
 
-app.get("/token", (req, res) => {
-  const token = jwt.sign({ name: "sandy" }, "sandy123");
-  res.cookie("token", token);
-  res.json({ succes: true });
+app.get("/test", (req, res) => {
+  res.status(200).send(`hello world!`);
 });
 
-app.get("/fetchdata", async (req, res) => {
-  const { token } = req.cookies;
-  console.log(token);
-  try {
-    const decodedMsg = await jwt.verify(token, "sandy123");
-    res.status(200).json({ msg: decodedMsg });
-  } catch (error) {
-    res.status(400).json({ error: "something went wrong!" });
-  }
-});
+//   app.get("/token", (req, res) => {
+//   const token = jwt.sign({ name: "sandy" }, "sandy123");
+//   res.cookie("token", token, {
+//     maxAge: 10000,
+//   });
+//   res.json({ succes: true });
+// });
+
+// app.get("/fetchdata", async (req, res) => {
+//   const { token } = req.cookies;
+//   // console.log(token);
+//   try {
+//     const decodedMsg = await jwt.verify(token, "sandy123");
+//     res.status(200).json({ msg: decodedMsg });
+//   } catch (error) {
+//     res.status(400).json({ error: "something went wrong!" });
+//   }
+// });
 
 export { app };
