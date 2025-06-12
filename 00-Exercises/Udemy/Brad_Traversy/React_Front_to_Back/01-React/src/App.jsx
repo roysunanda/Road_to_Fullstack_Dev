@@ -1,3 +1,12 @@
+import { Header } from "./components/Header";
+
 export const App = () => {
-  return <h1>Hello, world.</h1>;
+  return (
+    <>
+      <Header text='Hello world' />
+      <div className='container'>
+        <h1>My App</h1>
+      </div>
+    </>
+  );
 };
