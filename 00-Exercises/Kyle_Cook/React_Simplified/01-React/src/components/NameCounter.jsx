@@ -1,9 +1,21 @@
+import { useEffect } from "react";
 import { useState } from "react";
 
 export const NameCounter = () => {
   const [name, setName] = useState("");
   const [age, setAge] = useState(0);
 
+  useEffect(() => {
+    const handler = () => {
+      console.log(name);
+    };
+    document.addEventListener("click", handler);
+    console.log("inside effect");
+    return () => {
+      document.removeEventListener("click", handler);
+      console.log("cleanup");
+    };
+  }, [name]);
   return (
     <>
       <label htmlFor='name'>Enter your name: </label>
