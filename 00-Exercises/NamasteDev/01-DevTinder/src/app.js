@@ -3,8 +3,8 @@ import bcrypt from "bcryptjs";
 import cookieParser from "cookie-parser";
 import jwt from "jsonwebtoken";
 
-import { userModel as User } from "../models/user.model.js";
-import { validateSignUpData } from "../utils/validation.js";
+import { userModel as User } from "./models/user.model.js";
+import { validateSignUpData } from "./utils/validation.js";
 
 const app = express();
 
@@ -33,11 +33,19 @@ app.post("/login", async (req, res) => {
 });
 
 app.get("/profile", async (req, res) => {
-  const { token } = req.cookies;
   // console.log(cookie);
   try {
-    const decodedMsg = await jwt.verify(token, "SecrectKey@123");
-    res.status(200).json({ success: true, data: decodedMsg });
+    const { token } = req.cookies;
+    if (!token) {
+      return res.status(400).json({ msg: "Invaid token!" });
+    }
+    const { _id } = await jwt.verify(token, "SecrectKey@123");
+    const user = await User.findById(_id);
+    if (!user) {
+      return res.status(400).json({ msg: "user not found!" });
+    }
+
+    res.status(200).json({ success: true, data: user });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
