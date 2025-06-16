@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken";
 
 import { userModel as User } from "./models/user.model.js";
 import { validateSignUpData } from "./utils/validation.js";
+import { userAuth } from "./middlewares/auth.js";
 
 const app = express();
 
@@ -23,29 +24,31 @@ app.post("/login", async (req, res) => {
     if (!isPassValid) {
       return res.status(400).json({ error: "invalid credentials." });
     }
-    const token = await jwt.sign({ _id: user._id }, "SecrectKey@123");
+    const token = await jwt.sign({ _id: user._id }, process.env.SECRECT_CODE, {
+      expiresIn: "1h",
+    });
     // console.log(token);
-    res.cookie("token", token);
+    res.cookie("token", token, { expires: new Date(Date.now() + 60 * 1000) });
     res.status(200).json({ msg: "login successful." });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
 
-app.get("/profile", async (req, res) => {
+app.get("/profile", userAuth, async (req, res) => {
   // console.log(cookie);
   try {
-    const { token } = req.cookies;
-    if (!token) {
-      return res.status(400).json({ msg: "Invaid token!" });
-    }
-    const { _id } = await jwt.verify(token, "SecrectKey@123");
-    const user = await User.findById(_id);
-    if (!user) {
-      return res.status(400).json({ msg: "user not found!" });
-    }
+    // const { token } = req.cookies;
+    // if (!token) {
+    //   return res.status(400).json({ msg: "Invaid token!" });
+    // }
+    // const { _id } = await jwt.verify(token, process.env.SECRECT_CODE);
+    // const user = await User.findById(_id);
+    // if (!user) {
+    //   return res.status(400).json({ msg: "user not found!" });
+    // }
 
-    res.status(200).json({ success: true, data: user });
+    res.status(200).json({ success: true, data: req.user });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

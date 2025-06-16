@@ -11,6 +11,7 @@ const PORT = process.env.PORT || 5000;
 
 const startServer = async () => {
   try {
+    // console.log(typeof process.env.PORT);
     await connectDB();
     app.listen(PORT, () => {
       console.log(`\nServer is listening on PORT: ${PORT}`);
