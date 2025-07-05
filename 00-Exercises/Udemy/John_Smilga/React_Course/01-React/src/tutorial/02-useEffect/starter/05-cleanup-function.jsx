@@ -1,5 +1,23 @@
+import { useState } from "react";
+import { useEffect } from "react";
+
+const RandomComp = () => {
+  useEffect(() => {
+    console.log(`random effect`);
+  }, []);
+  return <h1>Random Component</h1>;
+};
+
 const CleanupFunction = () => {
-  return <h2>cleanup function</h2>;
+  const [toggle, setToggle] = useState(false);
+  return (
+    <div>
+      <button className='btn' onClick={() => setToggle(!toggle)}>
+        Toggle Click
+      </button>
+      {toggle && <RandomComp />}
+    </div>
+  );
 };
 
 export default CleanupFunction;
