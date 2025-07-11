@@ -1,4 +1,4 @@
-export const NoteList = ({ notes }) => {
+export const NoteList = ({ notes, deleteNote }) => {
   if (notes.length === 0) {
     return <p className='text-center test-gray-500'>No Notes Yet!</p>;
   }
@@ -16,6 +16,12 @@ export const NoteList = ({ notes }) => {
             <strong>Priority: </strong> {note.priority}
           </p>
           <p className='mt-2'>{note.description}</p>
+          {/* delete button */}
+          <button
+            className='mt-3 text-red-500 cursor-pointer transition hover:text-red-700'
+            onClick={() => deleteNote(note.id)}>
+            Delete 🗑️
+          </button>
         </div>
       ))}
     </div>
